@@ -92,17 +92,6 @@ Test reports are also generated locally in:
 7. **Deploy to GitHub Pages** - Publish live report
 8. **Cleanup** - Remove old Docker images
 
-### Bonus: Jenkinsfile
-**Alternative CI/CD:** `Jenkinsfile`
-
-**View File:** https://github.com/iskndkr/api_automation_docker/blob/main/Jenkinsfile
-
-Enterprise-ready Jenkins pipeline with:
-- Docker integration
-- Email notifications
-- Advanced reporting
-- Build artifact management
-
 ---
 
 ## 🐳 Deliverable 4: Dockerfile
@@ -209,7 +198,6 @@ View the latest test execution results:
 | **CI/CD Pipeline** | https://github.com/iskndkr/api_automation_docker/actions |
 | **GitHub Actions Workflow** | https://github.com/iskndkr/api_automation_docker/blob/main/.github/workflows/ci.yml |
 | **Dockerfile** | https://github.com/iskndkr/api_automation_docker/blob/main/Dockerfile |
-| **Jenkinsfile (Bonus)** | https://github.com/iskndkr/api_automation_docker/blob/main/Jenkinsfile |
 
 ---
 

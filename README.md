@@ -12,7 +12,6 @@ A comprehensive REST API test automation framework for FakeRestAPI's online book
 - [Running Tests](#running-tests)
   - [Local Execution](#local-execution)
   - [Docker Execution](#docker-execution)
-  - [Jenkins Pipeline](#jenkins-pipeline)
 - [Test Reports](#test-reports)
 - [Configuration](#configuration)
 - [API Endpoints Covered](#api-endpoints-covered)
@@ -29,7 +28,7 @@ This project is a production-ready API automation testing framework that validat
 - Comprehensive test coverage (happy paths and edge cases)
 - Automated test reporting with Allure
 - Dockerized test execution
-- CI/CD pipeline integration with Jenkins
+- CI/CD pipeline integration with GitHub Actions
 - Configuration management with environment variable support
 
 **Base API URL:** https://fakerestapi.azurewebsites.net/api/v1
@@ -69,7 +68,7 @@ api_automation_docker/
 │           └── allure.properties        # Allure configuration
 ├── Dockerfile                            # Docker container definition
 ├── .dockerignore                         # Docker ignore file
-├── Jenkinsfile                           # Jenkins pipeline configuration
+├── .github/workflows/ci.yml              # GitHub Actions CI/CD pipeline
 ├── testng.xml                            # TestNG suite configuration
 ├── pom.xml                               # Maven dependencies
 ├── .gitignore                            # Git ignore file
@@ -90,7 +89,7 @@ api_automation_docker/
 | AssertJ | 3.25.1 | Fluent assertions |
 | SLF4J/Logback | 2.0.9/1.4.14 | Logging |
 | Docker | Latest | Containerization |
-| Jenkins | Latest | CI/CD pipeline |
+| GitHub Actions | Latest | CI/CD pipeline |
 
 ## Prerequisites
 
@@ -104,11 +103,8 @@ api_automation_docker/
 - Docker Compose (optional)
 
 ### For CI/CD:
-- Jenkins server with Docker support
-- Required Jenkins plugins:
-  - Docker Pipeline
-  - Allure Plugin
-  - HTML Publisher Plugin
+- GitHub account
+- GitHub Actions enabled (automatically available for all repositories)
 
 ## Installation and Setup
 
@@ -196,20 +192,6 @@ docker rm test-run
 ```bash
 docker run -it --rm bookstore-api-tests bash
 ```
-
-### Jenkins Pipeline
-
-1. **Create a new Pipeline job in Jenkins**
-2. **Configure the pipeline to use the Jenkinsfile from the repository**
-3. **Set up required credentials and environment variables**
-4. **Run the pipeline**
-
-The pipeline will:
-- Build the Docker image
-- Run tests inside the container
-- Generate and publish Allure reports
-- Archive test results
-- Send email notifications (if configured)
 
 ## Test Reports
 
@@ -314,23 +296,29 @@ mvn test
 
 ## CI/CD Integration
 
-### Jenkins Pipeline Stages
+### GitHub Actions Pipeline
+
+The project uses GitHub Actions for continuous integration and delivery. The workflow is automatically triggered on every push to the main branch.
+
+**Workflow File:** `.github/workflows/ci.yml`
+
+### Pipeline Stages
 
 1. **Checkout** - Clone repository
 2. **Build Docker Image** - Create test container
-3. **Run Tests in Docker** - Execute test suite
-4. **Generate Allure Report** - Create visual reports
-5. **Publish Reports** - Make reports available
-6. **Cleanup** - Remove old images and containers
+3. **Run Tests in Docker** - Execute test suite in isolated environment
+4. **Generate Allure Report** - Create interactive HTML reports
+5. **Publish Reports** - Deploy reports to GitHub Pages
+6. **Archive Artifacts** - Store test results for 30 days
+7. **Cleanup** - Remove old Docker images
 
 ### Pipeline Features
 - Automated test execution on code changes
 - Docker-based isolated test environment
-- Parallel execution support
-- Automatic report generation
-- Email notifications on build status
-- Artifact archiving
-- Build history management
+- Automatic report generation (TestNG + Allure)
+- GitHub Pages deployment for live reports
+- Downloadable test artifacts
+- Workflow summary with execution details
 
 ## Code Quality
 
@@ -403,12 +391,6 @@ mvn clean install -U
 rm -rf ~/.m2/repository
 mvn clean install
 ```
-
-#### Jenkins pipeline fails
-- Ensure Docker is installed and running on Jenkins agent
-- Verify Maven and JDK are configured in Global Tool Configuration
-- Check required plugins are installed (Docker, Allure, HTML Publisher)
-- Verify network connectivity to FakeRestAPI
 
 ## Contact and Support
 

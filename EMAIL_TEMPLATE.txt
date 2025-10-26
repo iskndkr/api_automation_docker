@@ -44,7 +44,7 @@ DELIVERABLES
    • Docker image build and optimization
    • Container-based test execution
    • Automatic report generation and deployment
-   • Bonus: Jenkinsfile for enterprise CI/CD
+   • GitHub Pages deployment for live reports
 
 4. DOCKERFILE
    File: https://github.com/iskndkr/api_automation_docker/blob/main/Dockerfile

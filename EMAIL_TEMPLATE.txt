@@ -1,0 +1,89 @@
+Subject: API Automation Project Submission - Docker & CI/CD Integration
+
+---
+
+Dear [Recipient Name],
+
+I am pleased to submit my API Automation Testing project with Docker containerization and CI/CD integration. All deliverables have been completed and are ready for review.
+
+PROJECT OVERVIEW
+================
+This project implements a comprehensive REST API test automation framework with:
+• 42 test cases covering Books and Authors API endpoints
+• Docker containerization for isolated test execution
+• Automated CI/CD pipeline with GitHub Actions
+• Interactive test reporting with Allure and TestNG
+
+DELIVERABLES
+============
+
+1. SOURCE CODE & DOCUMENTATION
+   Repository: https://github.com/iskndkr/api_automation_docker
+   README: https://github.com/iskndkr/api_automation_docker/blob/main/README.md
+
+   Features:
+   • Complete automation framework (Java + Maven + RestAssured + TestNG)
+   • Comprehensive documentation with setup and usage instructions
+   • Clean architecture following SOLID principles
+
+2. TEST REPORTS
+   Live Report: https://iskndkr.github.io/api_automation_docker/
+   Artifacts: https://github.com/iskndkr/api_automation_docker/actions
+
+   Available formats:
+   • Interactive Allure Report (GitHub Pages)
+   • TestNG HTML Reports (downloadable artifacts)
+   • Execution logs and detailed results
+
+3. CI/CD PIPELINE
+   Pipeline Status: https://github.com/iskndkr/api_automation_docker/actions
+   Configuration: https://github.com/iskndkr/api_automation_docker/blob/main/.github/workflows/ci.yml
+
+   Features:
+   • Automated build and test execution on every push
+   • Docker image build and optimization
+   • Container-based test execution
+   • Automatic report generation and deployment
+   • Bonus: Jenkinsfile for enterprise CI/CD
+
+4. DOCKERFILE
+   File: https://github.com/iskndkr/api_automation_docker/blob/main/Dockerfile
+
+   Features:
+   • Automated test execution on container start
+   • Configurable via environment variables (BASE_URL, API_VERSION, LOG_LEVEL)
+   • Multi-stage build optimization
+   • Built-in report generation
+
+QUICK START
+===========
+git clone https://github.com/iskndkr/api_automation_docker.git
+cd api_automation_docker
+docker build -t bookstore-api-tests .
+docker run --rm bookstore-api-tests
+
+DETAILED DELIVERABLES DOCUMENT
+==============================
+For a comprehensive overview of all deliverables, please see:
+https://github.com/iskndkr/api_automation_docker/blob/main/DELIVERABLES.md
+
+VERIFICATION
+============
+The CI/CD pipeline is currently active and running. You can:
+• View the latest test execution: https://github.com/iskndkr/api_automation_docker/actions
+• Access live test reports: https://iskndkr.github.io/api_automation_docker/
+• Download test artifacts from any workflow run
+• Clone and run the project locally or via Docker
+
+All deliverables have been tested and verified to be working correctly.
+
+Please let me know if you need any clarifications or additional information.
+
+Best regards,
+[Your Name]
+
+---
+
+ATTACHMENTS (if applicable):
+• DELIVERABLES.md - Detailed deliverables documentation
+• Screenshots of test reports (optional)

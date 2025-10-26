@@ -100,7 +100,6 @@ api_automation_docker/
 
 ### For Docker Execution:
 - Docker installed and running
-- Docker Compose (optional)
 
 ### For CI/CD:
 - GitHub account
@@ -111,7 +110,7 @@ api_automation_docker/
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/iskndkr/api_automation_docker.git
 cd api_automation_docker
 ```
 
@@ -198,6 +197,8 @@ docker run -it --rm bookstore-api-tests bash
 ### Allure Report
 
 Allure provides rich, interactive HTML reports with detailed test execution information.
+
+**Live Report (GitHub Pages):** https://iskndkr.github.io/api_automation_docker/
 
 **Generate and view locally:**
 ```bash
@@ -394,15 +395,10 @@ mvn clean install
 
 ## Contact and Support
 
-For questions, issues, or contributions, please:
-- Open an issue in the repository
-- Contact the QA team
-- Review the inline code documentation
+For questions, issues, or contributions, please open an issue in the repository.
 
 ---
 
 **Project Status:** ✅ Production Ready
 
-**Last Updated:** 2025-10-25
-
-**Maintained by:** QA Automation Team
+**Last Updated:** 2025-10-26

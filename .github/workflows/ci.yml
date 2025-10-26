@@ -1,0 +1,114 @@
+name: API Automation CI/CD
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  DOCKER_IMAGE: bookstore-api-tests
+  BASE_URL: https://fakerestapi.azurewebsites.net
+  API_VERSION: /api/v1
+
+jobs:
+  test:
+    name: Build & Test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ env.DOCKER_IMAGE }}:${{ github.sha }} \
+                       -t ${{ env.DOCKER_IMAGE }}:latest .
+
+      - name: Run tests in Docker container
+        run: |
+          docker run --name api-tests-${{ github.run_number }} \
+            -e BASE_URL=${{ env.BASE_URL }} \
+            -e API_VERSION=${{ env.API_VERSION }} \
+            ${{ env.DOCKER_IMAGE }}:latest
+        continue-on-error: true
+
+      - name: Copy test results from container
+        if: always()
+        run: |
+          docker cp api-tests-${{ github.run_number }}:/app/target ./target || true
+          docker rm -f api-tests-${{ github.run_number }} || true
+
+      - name: Upload TestNG Reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: testng-reports
+          path: |
+            target/surefire-reports/
+            target/surefire-reports/index.html
+          retention-days: 30
+
+      - name: Upload Allure Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results
+          path: target/allure-results/
+          retention-days: 30
+
+      - name: Generate Allure Report
+        if: always()
+        uses: simple-elf/allure-report-action@master
+        with:
+          allure_results: target/allure-results
+          allure_history: allure-history
+          keep_reports: 20
+
+      - name: Deploy Allure Report to GitHub Pages
+        if: always()
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: allure-history
+
+      - name: Test Report Summary
+        if: always()
+        run: |
+          echo "## Test Execution Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Build Number:** ${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Commit:** ${{ github.sha }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Base URL:** ${{ env.BASE_URL }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Reports" >> $GITHUB_STEP_SUMMARY
+          echo "- TestNG Report: Available in artifacts" >> $GITHUB_STEP_SUMMARY
+          echo "- Allure Report: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/${{ github.run_number }}" >> $GITHUB_STEP_SUMMARY
+
+      - name: Cleanup old Docker images
+        if: always()
+        run: |
+          docker images ${{ env.DOCKER_IMAGE }} --format "{{.ID}}" | tail -n +6 | xargs -r docker rmi || true
+
+  docker-publish:
+    name: Publish Docker Image
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t ${{ env.DOCKER_IMAGE }}:latest .
+
+      - name: Save Docker image info
+        run: |
+          echo "Docker image built successfully: ${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_STEP_SUMMARY
+          echo "Image can be used with: docker run --rm ${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_STEP_SUMMARY
